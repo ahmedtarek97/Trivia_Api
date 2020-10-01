@@ -1,0 +1,8 @@
+#!/media/ahmed/8007fb12-4a58-4315-82a9-3c9fcbe861db/fwd/Trivia_api/env/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pylint import run_pyreverse
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(run_pyreverse())
