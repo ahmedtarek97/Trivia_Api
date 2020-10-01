@@ -99,7 +99,7 @@ def create_app(test_config=None):
       abort(422)
 
   '''
-  @TODO: 
+  @DONE: 
   Create an endpoint to POST a new question, 
   which will require the question and answer text, 
   category, and difficulty score.
@@ -128,7 +128,7 @@ def create_app(test_config=None):
 
 
   '''
-  @TODO: 
+  @DONE: 
   Create a POST endpoint to get questions based on a search term. 
   It should return any questions for whom the search term 
   is a substring of the question. 
@@ -150,10 +150,11 @@ def create_app(test_config=None):
                 'total_questions': len(results),
                 'currentCategory': None                
             })
+            
 
   
   '''
-  @TODO: 
+  @DONE: 
   Create a GET endpoint to get questions based on category. 
 
   TEST: In the "List" tab / main screen, clicking on one of the 
@@ -162,22 +163,24 @@ def create_app(test_config=None):
   '''
   @app.route('/categories/<int:category_id>/questions')
   def get_questions_by_category(category_id):
-    try:
-        filtered_questions = Question.query.filter(
-        Question.category == str(category_id)).all()
+  
+    filtered_questions = Question.query.filter(
+    Question.category == str(category_id)).all()
+    if len(filtered_questions) == 0:
+      abort(404)
 
-        return jsonify({
-            'success': True,
-            'questions': [question.format() for question in filtered_questions],
-            'total_questions': len(filtered_questions),
-            'current_category': category_id
-            })
-    except:
-        abort(404)
+    return jsonify({
+        'success': True,
+        'questions': [question.format() for question in filtered_questions],
+        'total_questions': len(filtered_questions),
+        'current_category': category_id
+        })
+    
+        
 
 
   '''
-  @TODO: 
+  @DONE: 
   Create a POST endpoint to get questions to play the quiz. 
   This endpoint should take category and previous question parameters 
   and return a random question within the given category, 
@@ -211,10 +214,25 @@ def create_app(test_config=None):
 
 
   '''
-  @TODO: 
+  @DONE: 
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+  @app.errorhandler(404)
+  def not_found(error):
+    return jsonify({
+        "success": False, 
+        "error": 404,
+        "message": "Not found"
+        }), 404
+
+  @app.errorhandler(422)
+  def unprocessable(error):
+    return jsonify({
+        "success": False, 
+        "error": 422,
+        "message": "unprocessable"
+        }), 422
   
   return app
 
